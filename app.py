@@ -3,28 +3,23 @@ import pandas as pd
 import plotly.express as px
 import os
 
-# 1. Page Configuration (Must be the first Streamlit command)
 st.set_page_config(page_title="Cricket Performance Analytics Dashboard", layout="wide")
 
 st.title("🏏 Cricket Performance Data Analysis Dashboard")
 st.markdown("Analyze team performances, player statistics, and run metrics dynamically.")
 
-# 2. Check and Load the Dataset safely
 csv_filename = "cricket_data.csv"
 
 if not os.path.exists(csv_filename):
     st.error(f"❌ Error: '{csv_filename}' file not found in the project folder! Please create it.")
 else:
     try:
-        # Load local CSV without cache to prevent frozen screen state
         df = pd.read_csv(csv_filename)
         
-        # 3. Sidebar Filters
         st.sidebar.header("Filter Options")
         teams_list = ["All"] + list(df['Team'].unique())
         selected_team = st.sidebar.selectbox("Select Team", options=teams_list)
 
-        # Filter logic based on user selection
         if selected_team != "All":
             filtered_df = df[df['Team'] == selected_team]
         else:
@@ -45,7 +40,6 @@ else:
 
         st.markdown("---")
 
-        # 5. Visualizations Section
         st.subheader("📈 Visual Data Insights")
         chart_col1, chart_col2 = st.columns(2)
 
@@ -80,7 +74,6 @@ else:
 
         st.markdown("---")
 
-        # 6. Detailed Data Table View
         st.subheader("📋 Detailed Player Statistics Table")
         st.dataframe(filtered_df.sort_values(by="Runs", ascending=False), use_container_width=True)
 
